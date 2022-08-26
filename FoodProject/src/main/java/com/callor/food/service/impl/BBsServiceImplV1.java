@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -21,14 +22,16 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BBsServiceImplV1 implements BBsService {
 
-	protected final BBsDao bbsDao;
-	protected final FileUpService fileService;
-	protected final  FileDao  fileDao;
-	public BBsServiceImplV1(BBsDao bbsDao, FileUpService fileService, FileDao fileDao) {
-		this.bbsDao = bbsDao;
-		this.fileService = fileService;
-		this.fileDao = fileDao;
-	}
+	@Autowired
+	private BBsDao bbsDao;
+
+	@Autowired
+	private FileUpService fileService;
+	
+	@Autowired
+	private FileDao  fileDao;
+	
+	
 
 	@Override
 	public String insertBbsAndFile(BBsVO bbsVO, MultipartFile file) {
@@ -77,16 +80,6 @@ public class BBsServiceImplV1 implements BBsService {
 		
 		int ret = bbsDao.insert(bbsVO);
 		
-		// 실제 이미지 데이터 들은 files 에 담겨 있는데
-		//  files 에 담겨있는 개별적인 파일을 분리하여 List 로 바꾸기 위해서
-		// files.getFiles() method 를 사용하는데
-		// 이때 getFiles() 에게 form 의 input tag 이름을 전달해 주어야 한다.
-//		List<MultipartFile> fileList = files.getFiles("mFile");
-		
-//		for(MultipartFile file :  fileList) {
-//			log.debug("파일들 : {}", file.getOriginalFilename());
-//		}
-		
 		try {
 			List<FilesVO> fileNames = fileService.filesUp(files);
 			for(FilesVO file : fileNames) {
@@ -94,7 +87,6 @@ public class BBsServiceImplV1 implements BBsService {
 			}
 			ret = fileDao.insertFiles(fileNames);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -146,4 +138,5 @@ public class BBsServiceImplV1 implements BBsService {
 		// TODO Auto-generated method stub
 		return bbsDao.findByUsername(username);
 	}
+
 }

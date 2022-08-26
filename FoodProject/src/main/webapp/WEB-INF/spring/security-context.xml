@@ -7,17 +7,21 @@
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security-5.3.xsd">
 
+<context:component-scan base-package="com.callor.food.service.auth"/>
 
 <sec:http auto-config="true" use-expressions="true">
+	<sec:csrf disabled="false"/>
 	<sec:intercept-url pattern="/user/join" access="permitAll"/>
 	<sec:intercept-url pattern="/user/login" access="isAnonymous()"/>
 	<sec:intercept-url pattern="/user/mypage" access="isAuthenticated()"/>
+	<sec:intercept-url pattern="/food/insert" access="isAuthenticated()"/>
+	<sec:intercept-url pattern="/food/detail" access="isAuthenticated()"/>
 	
-	<sec:intercept-url pattern="/food/**" access="authentication"/>
-	
-	<sec:intercept-url pattern="/admin/**" access="authentication AND hasRole('ROLE_ADMIN)"/>
+	<sec:intercept-url pattern="/admin/**" access="authentication AND hasRole('ROLE_ADMIN')"/>
 	<sec:intercept-url pattern="/" access="permitAll"/>
+	
 	<sec:form-login login-page="/user/login?error=LOGIN_NEED" login-processing-url="/user/login"/>
+	<sec:logout logout-url="/logout" invalidate-session="true" delete-cookies="JSESSIONID" logout-success-url="/user/login"/>
 </sec:http>
 <sec:authentication-manager>
 	<sec:authentication-provider ref="authenticationProvider"/>

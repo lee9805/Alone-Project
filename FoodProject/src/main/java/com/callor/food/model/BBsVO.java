@@ -22,6 +22,7 @@ public class BBsVO {
 	private String b_date;
 	private String b_time;
 	private String b_writer;
+	private String b_addr;
 	private String b_subject;
 	private String b_content;
 	

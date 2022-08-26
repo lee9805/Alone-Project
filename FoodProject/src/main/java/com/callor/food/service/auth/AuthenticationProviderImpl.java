@@ -55,35 +55,14 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 		List<AuthorVO> authList = userDao.select_auths(username);
 		List<GrantedAuthority> grantList = new ArrayList<>();
 		
-		// tbl_authorities 에서 select 한 문자열로 되어있는 authority 정보를
-		// GrandtedAuthority 타입으로 변환하기
-		// 이 정보는 Spring Security hasRole() method 에서 참조한다
 		for(AuthorVO vo : authList) {
 			grantList.add(new SimpleGrantedAuthority(vo.getAuthority()));
 		}
-		
-		/* 
-		 * 
-		 * UserVO 객체와 권한리스트로 Token 발행하기
-		 * Token 에 UserVO 가 담기게 되고
-		 * Security 에서 제공하는 user 정보 이외의 항목
-		 * 	(UserVO 에 임의로 설정한 항목들 : realname, nicknake, email 등등)
-		 * 들을 JSP 에서 자유롭게 principal 객체를 통해 접근 할수 있다
-		 * 
-		 */
+	
+
 		return new UsernamePasswordAuthenticationToken(
 				userVO, null,grantList);
 
-		/*
-		 * 
-		 * 사용자ID(username) 비번(password) 권한리스트 만으로 Token 발행하기
-		 * Token 을 발행하는 최소한의 요건
-		 * 이렇게 Token 을 발행하면 
-		 * JSP 에서 principal.username, principal.password 항목은 참조 할수 있으나
-		 * principal.email, principal.realname 등의 항목은 참조할 수 없다
-		 * return new UsernamePasswordAuthenticationToken(
-		 *      username, password,grantList);
-		*/
 
 	}
 
