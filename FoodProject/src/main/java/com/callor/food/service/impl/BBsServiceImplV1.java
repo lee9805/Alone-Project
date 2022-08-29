@@ -126,11 +126,15 @@ public class BBsServiceImplV1 implements BBsService {
 		// TODO Auto-generated method stub
 		return bbsDao.update(vo);
 	}
+				
 
 	@Override
 	public int delete(Long id) {
-		// TODO Auto-generated method stub
-		return bbsDao.delete(id);
+		
+		bbsDao.findById(id);
+		bbsDao.delete(id);
+		
+		return 0;
 	}
 
 	@Override

@@ -97,13 +97,13 @@ public class FoodController {
 		BBsVO todoVO = bbsService.findById(l_seq);
 		model.addAttribute("FOOD",todoVO);
 		model.addAttribute("LAYOUT","FOOD_LIST");
-		return "home";
+		return "food/insert";
 		
 	}
 	
 	
-	@RequestMapping(value="/update/{seq}",method=RequestMethod.POST)
-	public String update(@PathVariable(name = "seq")  String seq,BBsVO bbsVO, Model model) {
+	@RequestMapping(value="/update",method=RequestMethod.POST)
+	public String update(BBsVO bbsVO, Model model) {
 		
 		log.debug("수신된 데이터 {}", bbsVO);
 		bbsService.update(bbsVO);
@@ -122,6 +122,11 @@ public class FoodController {
 			// TODO: handle exception
 		}
 		model.addAttribute("LAYOUT","FOOD_DETAIL");
+		return "home";
+	}
+	@RequestMapping(value="delete/{seq}",method=RequestMethod.GET)
+	public String delete(@PathVariable(name = "seq") String seq) {
+		bbsService.delete(Long.valueOf(seq));
 		return "home";
 	}
 	@ModelAttribute("bbsVO")

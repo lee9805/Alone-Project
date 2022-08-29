@@ -11,7 +11,7 @@
  	</select>
  	 <select id="findByUsername" resultType="BBsVO">
  		SELECT * FROM tbl_bbs WHERE b_writer= #{b_writer}
- 		ORDER BY b_date DESC, b_time DESC
+ 		ORDER BY b_seq
  	</select>
  	
  	<!-- 
@@ -19,6 +19,18 @@
  	seq 를 생성하는 SELECT 문을 먼저 실행하고
  	그 결과를 BBsVO 의 b_seq 변수에 담아라 
  	 -->
+ 	 <update id="update">
+ 	 	UPDATE tbl_bbs(
+ 	 		SET b_content= #{b_content},
+ 	 			b_subject= #{b_subject},
+ 	 			b_addr= #{b_addr}
+ 	 		WHERE b_seq= #{b_seq}
+ 	 	)
+ 	 </update>
+ 	 <delete id="delete">
+ 	 	DELETE FROM tbl_bbs 
+ 	 	WHERE b_seq = #{b_seq}
+ 	 </delete>
  	<insert id="insert" parameterType="BBsVO">
 		 	INSERT INTO tbl_bbs(
 			    b_seq,
