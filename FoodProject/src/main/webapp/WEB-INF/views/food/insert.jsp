@@ -22,6 +22,6 @@
 		<form:input path="b_subject" placeholder="제목을 입력해수세요"/>
 		<form:input path="b_addr" placeholder="주소를 입력하세요"/>
 		<form:textarea path="b_content" placeholder="내용을 입력해주세요"/>
-		<!-- <input type="file" name="mFile"  accept="images/*"/> -->
+		<input type="file" name="mFile"  accept="images/*"/>
 		<button>작성완료</button>
 	</form:form>
